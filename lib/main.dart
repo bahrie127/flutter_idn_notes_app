@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_idn_notes_app/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_idn_notes_app/data/datasources/auth_remote_datasource.dart';
+import 'package:flutter_idn_notes_app/data/datasources/note_remote_datasource.dart';
 import 'package:flutter_idn_notes_app/pages/home_page.dart';
 import 'package:flutter_idn_notes_app/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:flutter_idn_notes_app/presentation/auth/bloc/logout/logout_bloc.dart';
 import 'package:flutter_idn_notes_app/presentation/auth/bloc/register/register_bloc.dart';
 import 'package:flutter_idn_notes_app/presentation/auth/login_page.dart';
+import 'package:flutter_idn_notes_app/presentation/notes/bloc/add_note/add_note_bloc.dart';
+import 'package:flutter_idn_notes_app/presentation/notes/bloc/all_notes/all_notes_bloc.dart';
+import 'package:flutter_idn_notes_app/presentation/notes/bloc/delete_note/delete_note_bloc.dart';
+import 'package:flutter_idn_notes_app/presentation/notes/notes_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,6 +33,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LogoutBloc(AuthRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => AddNoteBloc(NoteRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => AllNotesBloc(NoteRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => DeleteNoteBloc(NoteRemoteDatasource()),
         ),
       ],
       child: MaterialApp(
@@ -63,7 +77,7 @@ class MyApp extends StatelessWidget {
               );
             }
             if (snapshot.hasData) {
-              return snapshot.data! ? const HomePage() : const LoginPage();
+              return snapshot.data! ? const NotesPage() : const LoginPage();
             }
             return const Scaffold(
               body: Center(

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_idn_notes_app/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:flutter_idn_notes_app/presentation/auth/register_page.dart';
+import 'package:flutter_idn_notes_app/presentation/notes/notes_page.dart';
 
 import '../../pages/home_page.dart';
 
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (state is LoginSuccess) {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
-                    return const HomePage();
+                    return const NotesPage();
                   }));
                 }
 

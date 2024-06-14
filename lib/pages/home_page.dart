@@ -111,12 +111,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ],
-          // leading: IconButton(
-          //   onPressed: () {
-          //     Scaffold.of(context).openDrawer();
-          //   },
-          //   icon: const Icon(Icons.settings),
-          // ),
+        
         ),
         body: contents[index],
         // floatingActionButton: FloatingActionButton(
