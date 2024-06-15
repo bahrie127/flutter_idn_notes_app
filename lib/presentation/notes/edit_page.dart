@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_idn_notes_app/data/models/response/note_response_model.dart';
+import 'package:flutter_idn_notes_app/presentation/notes/bloc/update_note/update_note_bloc.dart';
+import 'package:flutter_idn_notes_app/presentation/notes/notes_page.dart';
 
 class EditPage extends StatefulWidget {
   final Note note;
@@ -87,9 +90,50 @@ class _EditPageState extends State<EditPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Update'),
+            child: BlocConsumer<UpdateNoteBloc, UpdateNoteState>(
+              listener: (context, state) {
+                if (state is UpdateNoteSuccess) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Update success'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NotesPage()));
+                }
+
+                if (state is UpdateNoteFailure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state is UpdateNoteLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ElevatedButton(
+                  onPressed: () {
+                    context.read<UpdateNoteBloc>().add(
+                          UpdateNoteButtonPressed(
+                            id: widget.note.id!,
+                            title: _titleController.text,
+                            content: _contentController.text,
+                            isPin: isPin,
+                          ),
+                        );
+                  },
+                  child: const Text('Update'),
+                );
+              },
             ),
           ),
         ],

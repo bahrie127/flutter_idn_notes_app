@@ -11,6 +11,7 @@ import 'package:flutter_idn_notes_app/presentation/auth/login_page.dart';
 import 'package:flutter_idn_notes_app/presentation/notes/bloc/add_note/add_note_bloc.dart';
 import 'package:flutter_idn_notes_app/presentation/notes/bloc/all_notes/all_notes_bloc.dart';
 import 'package:flutter_idn_notes_app/presentation/notes/bloc/delete_note/delete_note_bloc.dart';
+import 'package:flutter_idn_notes_app/presentation/notes/bloc/update_note/update_note_bloc.dart';
 import 'package:flutter_idn_notes_app/presentation/notes/notes_page.dart';
 
 void main() {
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => DeleteNoteBloc(NoteRemoteDatasource()),
+        ),
+        BlocProvider(
+          create: (context) => UpdateNoteBloc(NoteRemoteDatasource()),
         ),
       ],
       child: MaterialApp(

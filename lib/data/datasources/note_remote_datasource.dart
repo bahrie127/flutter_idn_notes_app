@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_idn_notes_app/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_idn_notes_app/data/datasources/config.dart';
@@ -85,4 +87,31 @@ class NoteRemoteDatasource {
     }
   }
 
+  //update notes
+  Future<Either<String, NoteResponseModel>> updateNote(
+    int id,
+    String title,
+    String content,
+    bool isPin,
+  ) async {
+    final authData = await AuthLocalDatasource().getAuthData();
+    final response = await http.put(
+      Uri.parse('${Config.baseUrl}/api/notes/$id'),
+      headers: {
+        'Authorization': 'Bearer ${authData.accessToken}',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'title': title,
+        'content': content,
+        'is_pin': isPin ? '1' : '0',
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return Right(NoteResponseModel.fromJson(response.body));
+    } else {
+      return Left(response.body);
+    }
+  }
 }
